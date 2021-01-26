@@ -1,0 +1,74 @@
+cat <<EOF|lxd init --preseed
+config:
+  core.https_address: '[::]:8443'
+  core.trust_password: ubuntu
+networks:
+- config:
+    ipv4.address: 10.171.5.1/24
+    ipv4.nat: "true"
+    ipv6.address: none
+    dns.mode: dynamic
+    ipv4.dhcp: false
+    ipv4.routing: true
+    dns.domain: orangebox.me
+  managed: true
+  name: ob-ra01-rs01
+  type: "bridge"
+  description: '10.171.5.0/24'
+- config:
+    ipv4.address: 10.171.6.1/24
+    ipv4.nat: "true"
+    ipv6.address: none
+    dns.mode: dynamic
+    ipv4.dhcp: false
+    ipv4.routing: true
+    dns.domain: orangebox.me
+  managed: true
+  name: ob-ra02-rs01
+  type: "bridge"
+  description: '10.171.6.0/24'
+- config:
+    ipv4.address: 10.171.7.1/24
+    ipv4.nat: "true"
+    ipv6.address: none
+    dns.mode: dynamic
+    ipv4.dhcp: false
+    ipv4.routing: true
+    dns.domain: orangebox.me
+  name: ob-ra03-rs01
+  type: "bridge"
+  description: '10.171.7.0/24'
+- config:
+    ipv4.address: 10.171.8.1/24
+    ipv4.nat: "true"
+    ipv6.address: none
+    dns.mode: dynamic
+    ipv4.dhcp: false
+    ipv4.routing: true
+    dns.domain: orangebox.me
+  managed: true
+  name: ob-ra04-rs01
+  type: "bridge"
+  description: '10.171.8.0/24'
+storage_pools:
+- config:
+    size: 30GB
+  description: "default pool"
+  name: default
+  driver: btrfs
+profiles:
+- config:
+  description: 'Default profile'  
+  devices:
+    eth0:
+      name: eth0
+      nictype: bridged
+      parent: lxdbr0
+      type: nic
+    root:
+      path: /
+      pool: default
+      type: disk
+  name: default
+cluster: null
+EOF
